@@ -87,7 +87,7 @@ jobs:
         cd ${{ env.BUILD_DIR }}
         jq '.projects = []' ~/crave.conf > tmp && mv tmp ~/crave.conf
         
-        time bash build.sh
+        bash build.sh
 
     - name: Error logs
       continue-on-error: true
