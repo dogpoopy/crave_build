@@ -96,13 +96,17 @@ jobs:
 
         crave pull 'out/error.log'
         echo "Displaying error.log"
-        cat error.log
-        rm -f error.log
+        cat out/error.log
+        rm -rf out
+        exit 0
 
-    - name: Checking for zip
+    - name: Checking for ROM zip
       continue-on-error: false
       run: |
         cd ${{ env.BUILD_DIR }}
+
+        NC='\033[0m'
+        RED='\033[0;31m'
 
         send_telegram_message() {
           local message="$1"
@@ -119,6 +123,11 @@ jobs:
         crave pull 'out/target/product/${{ env.DEVICE_CODENAME }}/*.zip'
         if [ -z "$(find . -maxdepth 1 -name '*.zip' | sed 's|^\./||')" ]; then
             send_telegram_message "Build for Project: ${{ env.ROM_NAME }}%0ADevice: ${{ env.DEVICE_CODENAME}}%0ASTATUS: Failed or Cancelled%0ACheck Info at: %0Ahttps://github.com/$(echo "${{ github.repository }}" | sed 's@_@\\_@g')/actions/runs/${{ github.run_id }}"
+            echo -e ${RED} "#######################################################################"
+            echo -e ${RED} "##                    ROM ZIP FILE NOT FOUND!!!                      ##"
+            echo -e ${RED} "##     THE BUILD MIGHT'VE FAILED, CANCELLED OR THE RUNNER DIED.      ##"
+            echo -e ${RED} "##            CHECK THE ERROR LOG OR GO TO FOSS.CRAVE.IO             ##"
+            echo -e ${RED} "#######################################################################${NC}"
             exit 1
         else
             file_name=$(find . -maxdepth 1 -name '*.zip' ! -name '*ota*' -print | sed 's|^\./||')
