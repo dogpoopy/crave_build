@@ -73,7 +73,7 @@ jobs:
         cd ${{ env.BUILD_DIR }}
         
         if [ -f "build.sh" ]; then
-           rm build.sh
+           rm -f build.sh
         fi
         curl -s https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref }}/scripts/${{ github.event.inputs.BUILD_SCRIPT }} > build.sh
 
@@ -87,7 +87,7 @@ jobs:
         cd ${{ env.BUILD_DIR }}
         jq '.projects = []' ~/crave.conf > tmp && mv tmp ~/crave.conf
         
-        bash build.sh
+        time ./build.sh
 
     - name: Error logs
       continue-on-error: true
