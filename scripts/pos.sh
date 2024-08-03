@@ -4,7 +4,7 @@ project="PixelOS-Fourteen" # just for telegram notif
 echo "DEVICE_CODENAME=$device" >> $GITHUB_ENV
 echo "ROM_NAME=$project" >> $GITHUB_ENV
 
-#crave ssh -- "rm -f out/target/product/$device/*.zip"
+crave ssh -- "rm -f out/target/product/$device/*.zip"
 
 crave run --no-patch -- "
 /opt/crave/resync.sh && \
