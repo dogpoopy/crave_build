@@ -74,6 +74,7 @@ jobs:
         crave pull 'out/target/product/${{ github.event.inputs.DEVICE_CODENAME }}/*.zip'
         file_name=$(find . -maxdepth 1 -name '*.zip' ! -name '*ota*' -print | sed 's|^\./||')
         echo $file_name
+        rm -f *ota*.zip
         bash_upload=$(curl -s -F "file=@$file_name" bashupload.com)
         download_link=$(echo "$bash_upload" | grep -o 'wget .*' | sed 's/^wget //')
         echo $download_link
